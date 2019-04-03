@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>js-rc4</title>
+</head>
+<body>
+    <script src='./rc4.js'></script>
+    <script>
+        // 第一次
+
+        // 客户端 创建rc4实例 
+        var rc4_client = new RC4();
+        rc4_client.init('hello');  // Sbox初始化
+
+        // 客户端 加密消息
+        var first_message = 'world';
+        var f_origin = string2array(first_message); // 将原始消息转成Uint8Array数据
+        console.log('f_origin',f_origin);
+
+        var f_encrypted = rc4_client.crypt(f_origin); //此时 加密 数据使用的是初始化状态的Sbox。加密过后rc4_client 的 Sbox 进行了第一次变化
+        console.log('f_encrypted', f_encrypted);
+        // 客户端 加密消息结束
+        console.log('end first encrypt');
+
+        // 客户端发送消息 。。。 f_encrypted
+        // 服务端接收消息 。。。 f_encrypted
+
+        // 服务端 创建rc4实例
+        var rc4_server = new RC4();
+        rc4_server.init('hello');  // Sbox初始化，和 rc4_client初始化的 Sbox 的状态相同
+
+        // 服务端 解密消息
+        var f_decrypted = rc4_server.crypt(f_encrypted); //此时 解密 数据使用的是初始化状态的Sbox。解密过后Sbox发生变化，而且 和rc4_client第一次变化后的Sbox相同，这样经过一个往返的加解密，两个rc4实例的Sbox 是相同状态。
+
+        var decrypted_str = array2string(f_decrypted); 
+
+        console.log('end first decrypt', decrypted_str);
+
+        // 第二次
+
+        var second_message = 'hi你好';
+
+        // 客户端 加密消息
+        var s_origin = string2array(second_message);
+
+        var s_encrypted = rc4_client.crypt(s_origin); //此时 加密 数据使用的是第一次变化后的Sbox。加密过后rc4_client 的 Sbox 进行了第二次变化
+        console.log('s_encrypted', s_encrypted);
+        // 客户端 加密消息结束
+        console.log('end second encrypt');
+
+        // 客户端发送消息 。。。 s_encrypted
+        // 服务端接收消息 。。。 s_encrypted
+
+        // 服务端 解密消息
+        var s_decrypted = rc4_server.crypt(s_encrypted); //此时 解密 数据使用的是第一次变化后的Sbox。解密过后Sbox发生变化，而且 和rc4_client第二次变化后的Sbox相同，这样经过一个往返的加解密，两个rc4实例的Sbox 是相同状态。
+        console.log('second decrypt', s_decrypted);
+        var s_decrypted_str = this.array2string(s_decrypted);
+
+        console.log('end second decrypt', s_decrypted_str);
+
+        // 字符串转 array
+        function string2array  (str) {
+            var arr = new Array(str.length);
+            // 把字符串的每一个字符转为 unicode 数字
+            for (var i = 0; i < str.length; i++) {
+                arr[i] = str.charCodeAt(i);
+            }
+            return arr;
+        }
+
+        // array 转为 字符串
+        function array2string  (arr) {
+            var data = [];
+            for (var i = 0; i < arr.length; i++) {
+                data[i] = String.fromCharCode(arr[i]);
+            }
+            return data.join('');
+        }
+
+        // uint8array 转 array
+        function buffer2array(buffer){
+            var arr = new Array();
+            for (var i = 0; i < buffer.length; i++) {
+                arr[i] = buffer[i];
+            }
+        }
+
+        // array 转 uint8array
+        function buffer2array(arr){
+            return new Uint8Array(arr);
+        }
+    </script>
+</body>
+</html>
