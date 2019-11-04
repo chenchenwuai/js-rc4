@@ -1,0 +1,35 @@
+{
+  "name": "js-rc4",
+  "version": "0.0.1",
+  "description": "js rc4",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --progress --mode development --config build/webpack.config.js",
+    "build": "webpack --progress --mode production --config build/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenchenwuai/js-rc4.git"
+  },
+  "keywords": [
+    "webpack",
+    "cli"
+  ],
+  "author": "chenwuai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chenchenwuai/js-rc4/issues"
+  },
+  "homepage": "https://github.com/chenchenwuai/js-rc4#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "babel-loader": "^7.1.5",
+    "lodash": "^4.17.15"
+  }
+}
