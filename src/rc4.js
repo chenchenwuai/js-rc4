@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 class RC4 {
     constructor(key) {
         this.VERSION = '1.0.0';
@@ -10,10 +8,10 @@ class RC4 {
         this._Sbox_index_j = 0;
 
         try {
-            if (key === null || key === undefined) {
+            if (key === null || key === undefined || key === '') {
                 throw 'Key is an illegal format.';
             }
-            if (_.isString(key)) {
+            if (Object.prototype.toString.call(key) == "[object String]") {
                 let j = 0;
                 for (let i = 0; i < 256; i++) {
                     this._Sbox[i] = i;
@@ -22,9 +20,7 @@ class RC4 {
                 }
                 this._is_inited = true;
                 console.log('Rc4 init end');
-            } else if (_.isBuffer(key)) {
-                throw 'Buffer type key is not supported at this time.';
-            } else {
+            }else {
                 throw 'Key is an illegal format.';
             }
         } catch (e) {
@@ -43,7 +39,7 @@ class RC4 {
             if (this._is_inited !== true) {
                 throw 'Rc4 is not init.';
             }
-            if (_.isArray(crypt_data)) {
+            if (Object.prototype.toString.call(crypt_data) === "[object Array]") {
                 for (let k = 0; k < crypt_data.length; k++) {
                     this._Sbox_index_i = (this._Sbox_index_i + 1) % 256;
                     this._Sbox_index_j = (this._Sbox_index_j + this._Sbox[this._Sbox_index_i]) % 256;
@@ -53,9 +49,7 @@ class RC4 {
                     t = null;
                 }
                 return crypt_data;
-            } else if (_.isBuffer(crypt_data)) {
-                throw 'Buffer type is not supported at this time.';
-            } else {
+            }else {
                 throw 'Crypt data is an illegal format.';
             }
         } catch (e) {
