@@ -30,6 +30,6 @@
   },
   "dependencies": {
     "babel-loader": "^7.1.5",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.19"
   }
 }
